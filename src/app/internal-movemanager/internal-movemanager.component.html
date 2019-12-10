@@ -1,0 +1,35 @@
+<p><a routerLink="/main">Go back</a></p>
+<hr>
+<h2>Internal Move list</h2>
+<h3>All entries are sorted by Name</h3>
+<button (click)="addMove()">Add new Move</button>
+<br>&nbsp;
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Accuracy (%)</th>
+		<th>Power</th>
+		<th>PP</th>
+		<th>Category</th>
+		<th>Type</th>
+	</tr>
+	<ng-container *ngIf="this.totalMove.length">
+		<ng-container *ngFor="let numberMove of this.totalMove; let i = index">
+			<tr>
+				<td>{{numberMove.moveName}}</td>
+				<td>{{numberMove.moveDescription}}</td>
+				<td>{{numberMove.moveAccuracy}}</td>
+				<td>{{numberMove.movePower}}</td>
+				<td>{{numberMove.movePP}}</td>
+				<td>{{getCategory(numberMove)}}</td>
+				<td>{{getType(numberMove)}}</td>
+				<td><button (click)="editMove(numberMove)">Edit</button></td>
+				<td><button (click)="deleteMove(i)">Delete</button></td>
+			</tr>
+		</ng-container>
+	</ng-container>
+</table>
+<br>
+<button (click)="addMove()">Add new Move</button>
+<br>&nbsp;

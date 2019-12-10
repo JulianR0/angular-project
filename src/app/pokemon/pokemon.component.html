@@ -1,0 +1,58 @@
+<p><a routerLink="/team">Go back</a></p>
+<hr>
+<h2>{{szTitle}}</h2>
+<ng-container *ngIf="this.szTeamName.length; else NoTeamName">
+	<h3>{{szTeamName}}</h3>
+</ng-container>
+<ng-template #NoTeamName>
+	<h3>Unnamed Team</h3>
+</ng-template>
+<button (click)="renameTeam()">Change Team Name</button><br>
+<button (click)="setActive()">Set Active Team</button>
+<br><br>
+<table>
+	<tr>
+		<th>Position</th>
+		<th>Species</th>
+		<th>Name</th>
+	</tr>
+	<ng-container *ngIf="this.playerTeam.length">
+		<ng-container *ngFor="let memberNumber of this.playerTeam; let iPosition = index">
+			<tr>
+				<td>{{iPosition + 1}}</td>
+				<td>{{memberNumber.defaultName}}</td>
+				<ng-container *ngIf="memberNumber.customName.length; else NoPKMNName">
+					<td>{{memberNumber.customName}}</td>
+				</ng-container>
+				<ng-template #NoPKMNName>
+					<td>{{memberNumber.defaultName}}</td>
+				</ng-template>
+				<td><button (click)="renameMember(iPosition)">Rename</button></td>
+				<td><button (click)="moveMember(iPosition)">Move</button></td>
+				<td><button (click)="deleteMember(iPosition)">Release</button></td>
+			</tr>
+		</ng-container>
+	</ng-container>
+</table>
+<br>
+<button (click)="saveTeam()">Save</button>
+<div *ngIf="this.szSaveStatus.length">
+	{{szSaveStatus}}
+</div>
+<br>
+<h3>Add Pokemon</h3>
+<div>
+	<form [formGroup]="ddPokemonList_Form" (ngSubmit)="addMember(pokemonName.value); pokemonName.value=''">
+		<label for="ddPokemonList_Orders">Name:
+			<select formControlName="ddPokemonList_Orders" id="ddPokemonList_Orders" #pokemonName>
+				<option *ngFor="let order of ddPokemonList_Orders; let i = index">
+					{{ddPokemonList_Orders[i]}}
+				</option>
+			</select>
+		</label>
+		<button>Add</button>
+	</form>
+	<div *ngIf="this.szMessage.length">
+		{{szMessage}}
+	</div>
+</div>

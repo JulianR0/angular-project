@@ -1,0 +1,180 @@
+<mat-dialog-content>
+<p [innerHTML]="szTitle"></p>
+
+<ng-container *ngIf="this.szOperation == 'RENAME'">
+	<form>
+		<mat-form-field class="max_width">
+			<input #dialogRenameBox matInput [formControl]="dialogRenameControl" [errorStateMatcher]="matcher" value="{{this.data.Pokemon.customName}}">
+			<mat-hint align="end">{{dialogRenameBox.value?.length || 0}}/12</mat-hint>
+			<mat-error *ngIf="dialogRenameControl.hasError('maxlength')">
+				Maximum name length is 12 characters.
+			</mat-error>
+		</mat-form-field>
+	</form>
+</ng-container>
+
+<ng-container *ngIf="this.szOperation == 'MOVE' && this.data.iTeamMembers > 1">
+	<form>
+		<mat-form-field class="max_width">
+			<input #dialogMoveBox matInput [formControl]="dialogMoveControl" [errorStateMatcher]="matcher">
+			<mat-error *ngIf="dialogMoveControl.hasError('maxlength') || dialogMoveControl.hasError('pattern')">
+				Only numbers between 1 and 6 are accepted.
+			</mat-error>
+		</mat-form-field>
+	</form>
+</ng-container>
+
+<ng-container *ngIf="this.szOperation == 'RENAME TEAM'">
+	<form>
+		<mat-form-field class="max_width">
+			<input #dialogRenameTeamBox matInput [formControl]="dialogRenameTeamControl" [errorStateMatcher]="matcher" value="{{this.data.szCurrentName}}">
+			<mat-hint align="end">{{dialogRenameTeamBox.value?.length || 0}}/16</mat-hint>
+			<mat-error *ngIf="dialogRenameTeamControl.hasError('maxlength')">
+				Team's maximum name length is 16 characters.
+			</mat-error>
+		</mat-form-field>
+	</form>
+</ng-container>
+
+<ng-container *ngIf="this.szOperation == 'ADD INTERNAL POKEMON' || this.szOperation == 'EDIT INTERNAL POKEMON'">
+	<form>
+		<mat-form-field class="max_width">
+			<input #dEditInternalPKMNBox_dexID matInput [formControl]="dEditInternalPKMNControl_dexID" [errorStateMatcher]="matcher">
+			<mat-hint>Dex Number</mat-hint>
+			<mat-error *ngIf="dEditInternalPKMNControl_dexID.hasError('pattern') || dEditInternalPKMNControl_dexID.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input #dEditInternalPKMNBox_defaultName matInput [formControl]="dEditInternalPKMNControl_defaultName" [errorStateMatcher]="matcher">
+			<mat-hint>Species Name</mat-hint>
+			<mat-error *ngIf="dEditInternalPKMNControl_defaultName.hasError('required')">
+				The Pokemon must have a default name!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<mat-select #dEditInternalPKMNBox_attributeTypePrimary [formControl]="dEditInternalPKMNControl_attributeType1" [errorStateMatcher]="matcher">
+				<ng-container *ngFor="let types of this.data.arrTypes; let i = index">
+					<mat-option value="{{i}}">{{this.data.arrTypes[i]}}</mat-option>
+				</ng-container>
+			</mat-select>
+			<mat-hint>Type (Primary)</mat-hint>
+			<mat-error *ngIf="dEditInternalPKMNControl_attributeType1.hasError('pattern') || dEditInternalPKMNControl_attributeType1.hasError('required')">
+				Primary type is obligatory.
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<mat-select #dEditInternalPKMNBox_attributeTypeSecondary [formControl]="dEditInternalPKMNControl_attributeType2" [errorStateMatcher]="matcher">
+				<ng-container *ngFor="let types of this.data.arrTypes; let i = index">
+					<ng-container *ngIf="i != 1">
+						<mat-option value="{{i}}">{{this.data.arrTypes[i]}}</mat-option>
+					</ng-container>
+				</ng-container>
+			</mat-select>
+			<mat-hint>Type (Secondary)</mat-hint>
+			<mat-error *ngIf="dEditInternalPKMNControl_attributeType2.hasError('required')">
+				Can't be undefined. If you do not want this Pokemon to use a secondary type, use Unassigned.
+			</mat-error>
+		</mat-form-field>
+	</form>
+</ng-container>
+
+<ng-container *ngIf="this.szOperation == 'ADD INTERNAL MOVE' || this.szOperation == 'EDIT INTERNAL MOVE'">
+	<form>
+		<mat-form-field class="max_width">
+			<input #dEditInternalMoveBox_moveName matInput [formControl]="dEditInternalMoveControl_moveName" [errorStateMatcher]="matcher">
+			<mat-hint>Name</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_moveName.hasError('required')">
+				The move must have a name!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input #dEditInternalMoveBox_moveDescription matInput [formControl]="dEditInternalMoveControl_moveDescription" [errorStateMatcher]="matcher">
+			<mat-hint>Description</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_moveDescription.hasError('required')">
+				Give the move a brief description!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input #dEditInternalMoveBox_moveAccuracy matInput [formControl]="dEditInternalMoveControl_moveAccuracy" [errorStateMatcher]="matcher">
+			<mat-hint>Accuracy (%)</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_moveAccuracy.hasError('pattern') || dEditInternalMoveControl_moveAccuracy.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input #dEditInternalMoveBox_movePower matInput [formControl]="dEditInternalMoveControl_movePower" [errorStateMatcher]="matcher">
+			<mat-hint>Power</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_movePower.hasError('pattern') || dEditInternalMoveControl_movePower.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input #dEditInternalMoveBox_movePP matInput [formControl]="dEditInternalMoveControl_movePP" [errorStateMatcher]="matcher">
+			<mat-hint>PP</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_movePP.hasError('pattern') || dEditInternalMoveControl_movePP.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<mat-select #dEditInternalMoveBox_moveCategory [formControl]="dEditInternalMoveControl_moveCategory" [errorStateMatcher]="matcher">
+				<ng-container *ngFor="let categories of this.data.arrCategories; let i = index">
+					<mat-option value="{{i}}">{{this.data.arrCategories[i]}}</mat-option>
+				</ng-container>
+			</mat-select>
+			<mat-hint>Category</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_moveCategory.hasError('required')">
+				Can't be undefined.
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<mat-select #dEditInternalMoveBox_moveType [formControl]="dEditInternalMoveControl_moveType" [errorStateMatcher]="matcher">
+				<ng-container *ngFor="let types of this.data.arrTypes; let i = index">
+						<mat-option value="{{i}}">{{this.data.arrTypes[i]}}</mat-option>
+				</ng-container>
+			</mat-select>
+			<mat-hint>Type</mat-hint>
+			<mat-error *ngIf="dEditInternalMoveControl_moveType.hasError('pattern') || dEditInternalMoveControl_moveType.hasError('required')">
+				Type is obligatory. Use Normal type if you want to use the default type.
+			</mat-error>
+		</mat-form-field>
+	</form>
+</ng-container>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button" (click)="close()">Cancel</button>
+	
+	<ng-container *ngIf="this.szOperation == 'RENAME'">
+		<button class="mat-raised-button" (click)="rename()">Rename</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'MOVE' && this.data.iTeamMembers > 1">
+		<button class="mat-raised-button" (click)="move()">Move</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'DELETE'">
+		<button class="mat-raised-button" (click)="delete()">Release</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'RENAME TEAM'">
+		<button class="mat-raised-button" (click)="renameTeam()">Rename</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'DELETE TEAM'">
+		<button class="mat-raised-button" (click)="delete()">Disband</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'ADD INTERNAL POKEMON' || this.szOperation == 'EDIT INTERNAL POKEMON'">
+		<button class="mat-raised-button" (click)="updatePokemon()">Apply</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'ADD INTERNAL MOVE' || this.szOperation == 'EDIT INTERNAL MOVE'">
+		<button class="mat-raised-button" (click)="updateMove()">Apply</button>
+	</ng-container>
+	
+	<ng-container *ngIf="this.szOperation == 'DELETE INTERNAL POKEMON' || this.szOperation == 'DELETE INTERNAL MOVE'">
+		<button class="mat-raised-button" (click)="delete()">Delete</button>
+	</ng-container>
+</mat-dialog-actions>

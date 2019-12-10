@@ -1,0 +1,44 @@
+<p>{{szPlayerTeam}} <b>{{szVSText}}</b> {{szEnemyTeam}}</p>
+<hr>
+<ng-container *ngFor="let battleLog of this.arrBattleLogs; let iLine = index">
+	<ng-container *ngIf="this.arrBattleLogs[iLine].length; else EmptyLine">
+		<p>{{this.arrBattleLogs[iLine]}}</p>
+	</ng-container>
+	<ng-template #EmptyLine>
+		<p>&nbsp;</p>
+	</ng-template>
+</ng-container>
+<hr>
+<div class="do_flex">
+	{{szActionText}}
+	<div style="text-align:right">
+		<ng-container *ngIf="this.playerTeam.teamData.length">
+			<ng-container *ngFor="let pokemon of this.playerTeam.teamData">
+				<ng-container *ngIf="pokemon.dexID > 0">
+					<ng-container *ngIf="pokemon.customName.length; else NoPKMNName">
+						[{{pokemon.health}} HP] {{pokemon.customName}}
+					</ng-container>
+					<ng-template #NoPKMNName>
+						[{{pokemon.health}} HP] {{pokemon.defaultName}}
+					</ng-template>
+					<br>
+				</ng-container>
+			</ng-container>
+		</ng-container>
+		----------------<br>
+		<ng-container *ngIf="this.enemyTeam.teamData.length">
+			<ng-container *ngFor="let pokemon of this.enemyTeam.teamData">
+				{{pokemon.defaultName}}
+				<br>
+			</ng-container>
+		</ng-container>
+	</div>
+</div>
+<button (click)="useSingleMove(0)">{{szButton[0]}}</button>
+<button (click)="dummy()">{{szButton[1]}}</button>
+<button (click)="dummy()">{{szButton[2]}}</button>
+<button (click)="dummy()">{{szButton[3]}}</button>
+<br>
+<button (click)="dummy()">{{szButton[4]}}</button>
+<button (click)="dummy()">{{szButton[5]}}</button>
+<button (click)="dummy()">{{szButton[6]}}</button>
