@@ -8,6 +8,7 @@ table, th, td
 table
 {
 	border-spacing: 5px;
+	margin: 10px;
 }
 
 th
@@ -24,32 +25,93 @@ body
 {
 	margin: 10px;
 	font-family: Roboto, "Helvetica Neue", sans-serif;
+	background: rgba(255, 255, 200, 0.25);
 }
 
-.max_width
-{
-	width: 100%;
-}
-
-.low_width
-{
-	width: 25%;
-}
-
-a.button
-{
-	-webkit-appearance: button;
-	-moz-appearance: button;
-	appearance: button;
-	
-	text-decoration: none;
-	color: initial;
-	font-size: 14px;
-	font-weight: normal;
-}
-
-.do_flex
+nav
 {
 	display: flex;
-	justify-content: space-between;
+	background: rgba(128, 255, 255, 0.35);
+	justify-content: left;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+button
+{
+	border: none;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+	font-size: 16px;
+}
+
+.nav_button
+{
+	color: black;
+	padding: 5px;
+	margin: 5px;
+	background: rgba(128, 128, 128, 0.5);
+	display: inline-block;
+}
+.nav_button:hover
+{
+	background: rgba(128, 128, 128, 1.0);
+}
+.nav_button:active
+{
+	background: rgba(255, 255, 255, 1.0);
+}
+
+.nav_p
+{
+	padding: 5px;
+	margin: 5px;
+	display: inline-block;
+}
+
+.button_new
+{
+	color: black;
+	padding: 6px;
+	background: rgba(128, 128, 255, 0.5);
+}
+.button_new:hover
+{
+	background: rgba(128, 128, 255, 1.0);
+}
+.button_new:active
+{
+	background: rgba(255, 255, 128, 1.0);
+}
+
+.button_edit
+{
+	color: black;
+	padding: 6px;
+	background: rgba(255, 200, 0, 0.5);
+}
+.button_edit:hover
+{
+	background: rgba(255, 200, 0, 1.0);
+}
+.button_edit:active
+{
+	background: rgba(0, 200, 255, 1.0);
+}
+
+.button_delete
+{
+	color: black;
+	padding: 6px;
+	background: rgba(255, 0, 0, 0.5);
+}
+.button_delete:hover
+{
+	background: rgba(255, 0, 0, 1.0);
+}
+.button_delete:active
+{
+	background: rgba(255, 0, 255, 1.0);
 }

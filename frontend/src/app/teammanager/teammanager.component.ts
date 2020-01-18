@@ -52,10 +52,6 @@ export class TeamManagerComponent implements OnInit, OnDestroy
 					if ( data[ iTeam ].isActive == null )
 						data[ iTeam ][ 'isActive' ] = false; // define
 					
-					// Active team?
-					if ( data[ iTeam ].isActive )
-						data[ iTeam ].teamName += " (ACTIVE)";
-					
 					// Save team's internal ID
 					this.teamID.push( data[ iTeam ][ '_id' ] );
 				}

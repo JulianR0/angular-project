@@ -1,9 +1,11 @@
-<p><a routerLink="/main">Go back</a></p>
+<nav>
+	<a routerLink="/main" class="nav_button">Go back</a>
+	<p class="nav_p">Internal Moves Database</p>
+</nav>
 <hr>
-<h2>Internal Move list</h2>
+<h2>List of all Moves</h2>
 <h3>All entries are sorted by Name</h3>
-<button (click)="addMove()">Add new Move</button>
-<br>&nbsp;
+<button (click)="addMove()" class="button_new">Add new Move</button>
 <table>
 	<tr>
 		<th>Name</th>
@@ -24,12 +26,11 @@
 				<td>{{numberMove.movePP}}</td>
 				<td>{{getCategory(numberMove)}}</td>
 				<td>{{getType(numberMove)}}</td>
-				<td><button (click)="editMove(numberMove)">Edit</button></td>
-				<td><button (click)="deleteMove(i)">Delete</button></td>
+				<td><button (click)="editMove(numberMove)" class="button_edit">Edit</button></td>
+				<td><button (click)="deleteMove(i)" class="button_delete">Delete</button></td>
 			</tr>
 		</ng-container>
 	</ng-container>
 </table>
-<br>
-<button (click)="addMove()">Add new Move</button>
+<button (click)="addMove()" class="button_new">Add new Move</button>
 <br>&nbsp;

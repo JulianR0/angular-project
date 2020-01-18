@@ -1,0 +1,28 @@
+section
+{
+	display: flex;
+	justify-content: left;
+}
+
+div
+{
+	margin: 10px;
+}
+
+.team_settings .button_new
+{
+	margin-left: 10px;
+}
+.team_settings .button_edit
+{
+	margin-left: 10px;
+}
+
+.add_to_team .button_new
+{
+	margin-left: 10px;
+}
+.add_to_team select
+{
+	margin-left: 10px;
+}

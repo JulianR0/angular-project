@@ -1,0 +1,39 @@
+section
+{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: left;
+	margin: 12px;
+}
+
+th.container
+{
+	font-weight: normal;
+}
+.container
+{
+	text-align: center;
+}
+.container .button_edit
+{
+	margin-right: 15px;
+}
+.container .button_delete
+{
+	margin-left: 15px;
+}
+
+.table_standby
+{
+	width: 25%;
+}
+.table_active
+{
+	width: 25%;
+	background: rgba(0, 200, 0, 0.5);
+}
+#hint_active
+{
+	color: rgb(0, 150, 0);
+}
+

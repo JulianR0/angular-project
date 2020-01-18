@@ -1,15 +1,15 @@
-<p><a routerLink="/team">Go back</a></p>
+<nav>
+	<a routerLink="/main" class="nav_button">Main menu</a>
+	<a routerLink="/team" class="nav_button">Go back</a>
+	<p class="nav_p">{{szTitle}}</p>
+</nav>
 <hr>
-<h2>{{szTitle}}</h2>
 <ng-container *ngIf="this.szTeamName.length; else NoTeamName">
-	<h3>{{szTeamName}}</h3>
+	<h2>{{szTeamName}}</h2>
 </ng-container>
 <ng-template #NoTeamName>
-	<h3>Unnamed Team</h3>
+	<h2>Unnamed Team</h2>
 </ng-template>
-<button (click)="renameTeam()">Change Team Name</button><br>
-<button (click)="setActive()">Set Active Team</button>
-<br><br>
 <table>
 	<tr>
 		<th>Position</th>
@@ -27,21 +27,28 @@
 				<ng-template #NoPKMNName>
 					<td>{{memberNumber.defaultName}}</td>
 				</ng-template>
-				<td><button (click)="renameMember(iPosition)">Rename</button></td>
-				<td><button (click)="moveMember(iPosition)">Move</button></td>
-				<td><button (click)="deleteMember(iPosition)">Release</button></td>
+				<td><button (click)="renameMember(iPosition)" class="button_edit">Rename</button></td>
+				<td><button (click)="moveMember(iPosition)" class="button_edit">Move</button></td>
+				<td><button (click)="deleteMember(iPosition)" class="button_delete">Release</button></td>
 			</tr>
 		</ng-container>
 	</ng-container>
 </table>
-<br>
-<button (click)="saveTeam()">Save</button>
-<div *ngIf="this.szSaveStatus.length">
-	{{szSaveStatus}}
-</div>
-<br>
-<h3>Add Pokemon</h3>
+<section class="team_settings">
+	<button (click)="saveTeam()" class="button_new">Save</button>
+	<button (click)="renameTeam()" class="button_edit">Change Team Name</button>
+	<button (click)="setActive()" class="button_edit">Set Active Team</button>
+</section>
 <div>
+	<ng-container *ngIf="this.szSaveStatus.length; else EmptySpace">
+		<p>{{szSaveStatus}}</p>
+	</ng-container>
+	<ng-template #EmptySpace>
+		<p>&nbsp;</p>
+	</ng-template>
+</div>
+<h3>Add Pokemon</h3>
+<section class="add_to_team">
 	<form [formGroup]="ddPokemonList_Form" (ngSubmit)="addMember(pokemonName.value); pokemonName.value=''">
 		<label for="ddPokemonList_Orders">Name:
 			<select formControlName="ddPokemonList_Orders" id="ddPokemonList_Orders" #pokemonName>
@@ -50,9 +57,14 @@
 				</option>
 			</select>
 		</label>
-		<button>Add</button>
+		<button class="button_new">Add</button>
 	</form>
-	<div *ngIf="this.szMessage.length">
-		{{szMessage}}
-	</div>
+</section>
+<div>
+	<ng-container *ngIf="this.szMessage.length; else EmptySpace">
+		<p>{{szMessage}}</p>
+	</ng-container>
+	<ng-template #EmptySpace>
+		<p>&nbsp;</p>
+	</ng-template>
 </div>

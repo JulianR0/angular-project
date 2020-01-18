@@ -1,43 +1,48 @@
-<p><a routerLink="/main">Go back</a></p>
+<nav>
+	<a routerLink="/main" class="nav_button">Go back</a>
+	<p class="nav_p">Team Manager</p>
+</nav>
 <hr>
-<h2>Team Manager</h2>
-<br>
-<ng-container *ngIf="this.totalTeams.length">
-	<ng-container *ngFor="let numberTeams of this.totalTeams; let i = index">
-		<table class="low_width">
-			<tr>
-				<th>Team Name</th>
-				<td style="text-align:center"><b>{{numberTeams.teamName}}</b></td>
-			</tr>
-			<tr>
-				<th [attr.rowspan]="this.teamRowSpan[i]">Members</th>
-				<ng-container *ngIf="numberTeams.teamData[0].customName.length; else NoPKMNName">
-					<td>{{numberTeams.teamData[0].customName}}</td>
+<h2>Your teams</h2>
+<p>The active team is marked with a <b id="hint_active">green</b> color.</p>
+<a routerLink="/team/new" class="button_new">Create new team</a>
+<section>
+	<ng-container *ngIf="this.totalTeams.length">
+		<ng-container *ngFor="let numberTeams of this.totalTeams; let i = index">
+			<table [ngClass]="{ 'table_active':numberTeams.isActive === true, 'table_standby':numberTeams.isActive === false }">
+				<tr>
+					<th>Team Name</th>
+					<td style="text-align: center"><b>{{numberTeams.teamName}}</b></td>
+				</tr>
+				<tr>
+					<th [attr.rowspan]="this.teamRowSpan[i]">Members</th>
+					<ng-container *ngIf="numberTeams.teamData[0].customName.length; else NoPKMNName">
+						<td>{{numberTeams.teamData[0].customName}}</td>
+					</ng-container>
+					<ng-template #NoPKMNName>
+						<td>{{numberTeams.teamData[0].defaultName}}</td>
+					</ng-template>
+				</tr>
+				<ng-container *ngFor="let memberNumber of numberTeams.teamData | slice:1">
+					<ng-container *ngIf="memberNumber.dexID > 0">
+						<tr>
+							<ng-container *ngIf="memberNumber.customName.length; else NoPKMNNameLoop">
+								<td>{{memberNumber.customName}}</td>
+							</ng-container>
+							<ng-template #NoPKMNNameLoop>
+								<td>{{memberNumber.defaultName}}</td>
+							</ng-template>
+						</tr>
+					</ng-container>
 				</ng-container>
-				<ng-template #NoPKMNName>
-					<td>{{numberTeams.teamData[0].defaultName}}</td>
-				</ng-template>
-			</tr>
-			<ng-container *ngFor="let memberNumber of numberTeams.teamData | slice:1">
-				<ng-container *ngIf="memberNumber.dexID > 0">
-					<tr>
-						<ng-container *ngIf="memberNumber.customName.length; else NoPKMNNameLoop">
-							<td>{{memberNumber.customName}}</td>
-						</ng-container>
-						<ng-template #NoPKMNNameLoop>
-							<td>{{memberNumber.defaultName}}</td>
-						</ng-template>
-					</tr>
-				</ng-container>
-			</ng-container>
-			<tr>
-				<th colspan="2" style="text-align:center">
-					<a routerLink="/team/{{this.teamID[i]}}" class="button">Modify</a>
-					<button (click)="deleteTeam(i)">Disband</button>
-				</th>
-			</tr>
-		</table>
+				<tr>
+					<th colspan="2" class="container">
+						<a routerLink="/team/{{this.teamID[i]}}" class="button_edit">Modify</a>
+						<button (click)="deleteTeam(i)" class="button_delete">Disband</button>
+					</th>
+				</tr>
+			</table>
+		</ng-container>
 	</ng-container>
-</ng-container>
-<br>
-<a routerLink="/team/new" class="button">Create new team</a>
+</section>
+<a routerLink="/team/new" class="button_new">Create new team</a>

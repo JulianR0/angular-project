@@ -1,9 +1,11 @@
-<p><a routerLink="/main">Go back</a></p>
+<nav>
+	<a routerLink="/main" class="nav_button">Go back</a>
+	<p class="nav_p">Internal Pokemon Database</p>
+</nav>
 <hr>
-<h2>Internal Pokemon</h2>
+<h2>List of all Pokemon</h2>
 <h3>All entries are sorted by Dex Number</h3>
-<button (click)="addPokemon()">Add new Pokemon</button>
-<br>&nbsp;
+<button (click)="addPokemon()" class="button_new">Add new Pokemon</button>
 <table>
 	<tr>
 		<th>Dex Number</th>
@@ -16,12 +18,11 @@
 				<td>{{numberPokemon.dexID}}</td>
 				<td>{{numberPokemon.defaultName}}</td>
 				<td>{{getType(numberPokemon)}}</td>
-				<td><button (click)="editPokemon(numberPokemon)">Edit</button></td>
-				<td><button (click)="deletePokemon(i)">Delete</button></td>
+				<td><button (click)="editPokemon(numberPokemon)" class="button_edit">Edit</button></td>
+				<td><button (click)="deletePokemon(i)" class="button_delete">Delete</button></td>
 			</tr>
 		</ng-container>
 	</ng-container>
 </table>
-<br>
-<button (click)="addPokemon()">Add new Pokemon</button>
+<button (click)="addPokemon()" class="button_new">Add new Pokemon</button>
 <br>&nbsp;

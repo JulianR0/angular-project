@@ -1,0 +1,39 @@
+section
+{
+	display: flex;
+	justify-content: left;
+}
+
+.b_button
+{
+	background: rgba(255, 255, 0, 0.5);
+	color: black;
+	display: inline-block;
+	padding: 10px;
+	margin: 10px;
+}
+.b_button:hover
+{
+	background: rgba(255, 255, 0, 1.0);
+}
+.b_button:active
+{
+	background: rgba(0, 0, 255, 1.0);
+}
+
+.e_button
+{
+	background: rgba(0, 255, 255, 0.5);
+	color: black;
+	display: inline-block;
+	padding: 10px;
+	margin: 10px;
+}
+.e_button:hover
+{
+	background: rgba(0, 255, 255, 1.0);
+}
+.e_button:active
+{
+	background: rgba(255, 0, 0, 1.0);
+}
