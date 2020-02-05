@@ -1,0 +1,98 @@
+.s_log
+{
+	height: 300px;
+	overflow-y: scroll;
+}
+
+.s_command
+{
+	display: flex;
+	justify-content: space-between;
+}
+
+.p_command
+{
+	padding: 2px;
+	margin: 2px;
+	display: inline-block;
+}
+
+.p_div
+{
+	margin: 1px;
+	text-align: right;
+}
+
+.p_status_player
+{
+	padding: 2px;
+	margin: 2px;
+}
+
+.p_status_enemy
+{
+	padding: 2px;
+	margin: 2px;
+	text-align: right;
+}
+
+.b_temp
+{
+	margin: 3px;
+}
+
+.b_items
+{
+	margin: 3px;
+	background: rgba(250, 200, 0, 1.0);
+}
+.b_items:hover
+{
+	background: rgba(250, 250, 50, 1.0);
+}
+.b_items:active
+{
+	background: rgba(50, 250, 250, 1.0);
+}
+
+.b_pokemon
+{
+	margin: 3px;
+	background: rgba(0, 250, 150, 1.0);
+}
+.b_pokemon:hover
+{
+	background: rgba(50, 250, 250, 1.0);
+}
+.b_pokemon:active
+{
+	background: rgba(250, 250, 50, 1.0);
+}
+
+.hp_green
+{
+	padding: 2px;
+	background: rgba(0, 170, 0, 0.9);
+	color: rgba(50, 50, 50, 1.0);
+}
+
+.hp_yellow
+{
+	padding: 2px;
+	background: rgba(250, 225, 0, 0.9);
+	color: rgba(50, 50, 50, 1.0);
+}
+
+.hp_red
+{
+	padding: 2px;
+	background: rgba(200, 0, 0, 1.0);
+	color: rgba(50, 50, 50, 1.0);
+}
+
+.hp_faint
+{
+	padding: 2px;
+	background: rgba(50, 0, 0, 1.0);
+	color: rgba(255, 255, 255, 1.0);
+}

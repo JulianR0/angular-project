@@ -1,44 +1,48 @@
-<p>{{szPlayerTeam}} <b>{{szVSText}}</b> {{szEnemyTeam}}</p>
+<nav>
+	<a routerLink="/main" class="nav_button">{{szBackButton}}</a>
+	<p class="nav_p">{{szPlayerTeam}} <b>{{szVSText}}</b> {{szEnemyTeam}}</p>
+</nav>
 <hr>
-<ng-container *ngFor="let battleLog of this.arrBattleLogs; let iLine = index">
-	<ng-container *ngIf="this.arrBattleLogs[iLine].length; else EmptyLine">
-		<p>{{this.arrBattleLogs[iLine]}}</p>
+<section #s_scroll class="s_log"> <!--(scroll)="onScroll()"!-->
+	<ng-container *ngFor="let battleLog of this.arrBattleLogs; let iLine = index">
+		<ng-container *ngIf="this.arrBattleLogs[iLine].length; else EmptyLine">
+			<p [innerHTML]="this.arrBattleLogs[iLine]"></p>
+		</ng-container>
 	</ng-container>
-	<ng-template #EmptyLine>
-		<p>&nbsp;</p>
-	</ng-template>
-</ng-container>
+</section>
 <hr>
-<div class="do_flex">
-	{{szActionText}}
-	<div style="text-align:right">
+<section class="s_command">
+	<aside class="a_left">
+		<p class="p_command">{{szActionText}}</p>
+		<br><br>
+		<button class="b_temp" (click)="useSingleMove(0)">{{szButton[0]}}</button>
+		<!-- Wait until we implement moves to use these
+		<button class="b_temp" (click)="dummy()">{{szButton[1]}}</button>
+		<button class="b_temp" (click)="dummy()">{{szButton[2]}}</button>
+		<button class="b_temp" (click)="dummy()">{{szButton[3]}}</button>
+		!-->
+		<br><br>
+		<button class="b_items" (click)="dummy()">{{szButton[4]}}</button>
+		<button class="b_pokemon" (click)="dummy()">{{szButton[5]}}</button>
+	</aside>
+	<aside class="a_right">
 		<ng-container *ngIf="this.playerTeam.teamData.length">
 			<ng-container *ngFor="let pokemon of this.playerTeam.teamData">
 				<ng-container *ngIf="pokemon.dexID > 0">
 					<ng-container *ngIf="pokemon.customName.length; else NoPKMNName">
-						[{{pokemon.health}} HP] {{pokemon.customName}}
+						<p class="p_status_player"><b [ngClass]="{ 'hp_green':GetHealth(pokemon) == 3, 'hp_yellow':GetHealth(pokemon) == 2, 'hp_red':GetHealth(pokemon) == 1, 'hp_faint':GetHealth(pokemon) == 0 }">[{{pokemon.health}} HP]</b> {{pokemon.customName}}</p>
 					</ng-container>
 					<ng-template #NoPKMNName>
-						[{{pokemon.health}} HP] {{pokemon.defaultName}}
+						<p class="p_status_player"><b [ngClass]="{ 'hp_green':GetHealth(pokemon) == 3, 'hp_yellow':GetHealth(pokemon) == 2, 'hp_red':GetHealth(pokemon) == 1, 'hp_faint':GetHealth(pokemon) == 0 }">[{{pokemon.health}} HP]</b> {{pokemon.defaultName}}</p>
 					</ng-template>
-					<br>
 				</ng-container>
 			</ng-container>
 		</ng-container>
-		----------------<br>
+		<p class="p_div">----------------</p>
 		<ng-container *ngIf="this.enemyTeam.teamData.length">
 			<ng-container *ngFor="let pokemon of this.enemyTeam.teamData">
-				{{pokemon.defaultName}}
-				<br>
+				<p class="p_status_enemy">{{pokemon.defaultName}}</p>
 			</ng-container>
 		</ng-container>
-	</div>
-</div>
-<button (click)="useSingleMove(0)">{{szButton[0]}}</button>
-<button (click)="dummy()">{{szButton[1]}}</button>
-<button (click)="dummy()">{{szButton[2]}}</button>
-<button (click)="dummy()">{{szButton[3]}}</button>
-<br>
-<button (click)="dummy()">{{szButton[4]}}</button>
-<button (click)="dummy()">{{szButton[5]}}</button>
-<button (click)="dummy()">{{szButton[6]}}</button>
+	</aside>
+</section>

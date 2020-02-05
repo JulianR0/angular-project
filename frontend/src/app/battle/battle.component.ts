@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -12,14 +12,17 @@ import { Pokemon, Move, Team } from '../classes';
 	styleUrls: ['./battle.component.css']
 })
 
-export class BattleComponent implements OnInit, OnDestroy
+export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked
 {
+	@ViewChild( 's_scroll', { static: false } ) private erScrollContainer: ElementRef;
+	bPauseScroll: boolean = false;
+	
+	szBackButton: string = 'Forfeit'
 	szPlayerTeam: string = 'Please wait...';
 	szVSText: string = ''; // These should be initially empty
 	szEnemyTeam: string = '';
 	szActionText: string = '';
-	arrBattleLogs: string[] = [ '', '', '', '', '', '', '', '', '' ];
-	arrBattleLine: number = 0;
+	arrBattleLogs: string[] = [];
 	
 	playerTeam = new Team();
 	enemyTeam = new Team();
@@ -33,13 +36,12 @@ export class BattleComponent implements OnInit, OnDestroy
 	// Empty buttons
 	szButton: string[] =
 	[
-		'_               ', // 16 char whitespace
-		'_               ',
-		'_               ',
-		'_               ',
-		'_               ',
-		'_               ',
-		'_               '
+		'Struggle',
+		'<empty>',
+		'<empty>',
+		'<empty>',
+		'Items',
+		'Pokemon'
 	];
 	
 	destroy$: Subject< boolean > = new Subject< boolean >();
@@ -93,7 +95,7 @@ export class BattleComponent implements OnInit, OnDestroy
 			}
 			
 			// We are ready, battle init.
-			this.LogBattle( `Turn ${this.iTurnNumber}` );
+			this.LogBattle( `<b>Turn ${this.iTurnNumber}</b>` );
 			
 			// First pokemon slot
 			if ( this.playerTeam.teamData[ 0 ].customName.length )
@@ -135,7 +137,7 @@ export class BattleComponent implements OnInit, OnDestroy
 			{
 				// We just process the data
 				enemyPokemon.health -= data.damage;
-				this.LogBattle( `${enemyPokemon.defaultName} took ${data.damage} damage!` );
+				this.LogBattle( `${enemyPokemon.defaultName} took <b>${data.damage}</b> damage!` );
 				
 				if ( enemyPokemon.health <= 0 )
 				{
@@ -148,6 +150,7 @@ export class BattleComponent implements OnInit, OnDestroy
 						// We are done
 						this.LogBattle( `${this.playerTeam.teamName} won the battle!` );
 						this.szActionText = 'Battle end.';
+						this.szBackButton = 'Go back';
 					}
 					else
 					{
@@ -172,7 +175,7 @@ export class BattleComponent implements OnInit, OnDestroy
 	{
 		// Increase turn counter
 		this.iTurnNumber++;
-		this.LogBattle( `Turn ${this.iTurnNumber}` );
+		this.LogBattle( `<b>Turn ${this.iTurnNumber}</b>` );
 		
 		// Get active pokemon's name
 		let playerPokemon = this.playerTeam.teamData[ this.SINGLE_iActivePlayerMember ];
@@ -205,7 +208,7 @@ export class BattleComponent implements OnInit, OnDestroy
 			
 			
 			playerPokemon.health -= data.damage;
-			this.LogBattle( `${playerPokemonName} took ${data.damage} damage!` );
+			this.LogBattle( `${playerPokemonName} took <b>${data.damage}</b> damage!` );
 			
 			if ( playerPokemon.health <= 0 )
 			{
@@ -218,6 +221,7 @@ export class BattleComponent implements OnInit, OnDestroy
 					// GAME OVER YEEAAAAHHHHHHH
 					this.LogBattle( 'You lost the battle...' );
 					this.szActionText = 'Battle end.';
+					this.szBackButton = 'Go back';
 				}
 				else
 				{
@@ -225,10 +229,10 @@ export class BattleComponent implements OnInit, OnDestroy
 					this.SINGLE_iActivePlayerMember++;
 					
 					let newPokemonName;
-					if ( this.playerTeam.teamData[this.SINGLE_iActiveEnemyMember].customName.length )
-						newPokemonName = this.playerTeam.teamData[this.SINGLE_iActiveEnemyMember].customName;
+					if ( this.playerTeam.teamData[this.SINGLE_iActivePlayerMember].customName.length )
+						newPokemonName = this.playerTeam.teamData[this.SINGLE_iActivePlayerMember].customName;
 					else
-						newPokemonName = this.playerTeam.teamData[this.SINGLE_iActiveEnemyMember].defaultName;
+						newPokemonName = this.playerTeam.teamData[this.SINGLE_iActivePlayerMember].defaultName;
 					
 					this.LogBattle( `Go ${newPokemonName}!` );
 				}
@@ -250,15 +254,52 @@ export class BattleComponent implements OnInit, OnDestroy
 	
 	LogBattle( message: string )
 	{
-		if ( this.arrBattleLine == 8 )
+		this.arrBattleLogs.push( message );
+	}
+	
+	// Styler check
+	GetHealth( pokemon: Pokemon )
+	{
+		if ( pokemon.health == 0 )
+			return 0;
+		
+		return 3;
+	}
+	
+	ngAfterViewChecked()
+	{
+		this.scrollToBottom();
+	}
+	
+	onScroll()
+	{
+		let element = this.erScrollContainer.nativeElement;
+		let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+		if ( this.bPauseScroll && atBottom )
 		{
-			this.arrBattleLogs.splice(0, 1);
-			this.arrBattleLogs.push( message );
+			this.bPauseScroll = false
 		}
 		else
 		{
-			this.arrBattleLogs[ this.arrBattleLine ] = message;
-			this.arrBattleLine++;
+			this.bPauseScroll = true
+		}
+	}
+	
+	scrollToBottom()
+	{
+		if ( this.bPauseScroll )
+			return;
+		
+		try
+		{
+			// Attempt to perform auto-scroll to the bottom
+			this.erScrollContainer.nativeElement.scrollTop = this.erScrollContainer.nativeElement.scrollHeight;
+		}
+		catch( err )
+		{
+			// Derp.
+			console.error( 'Mew stucked her Pokebeans in the battle box.' ); 
+			console.error( "[FRONTEND ERROR] Couldn't scroll element to bottom." ); 
 		}
 	}
 	
