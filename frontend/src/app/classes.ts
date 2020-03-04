@@ -1,10 +1,24 @@
-export class Pokemon
+export class BasePokemon
 {
 	dexID: number;
 	defaultName: string;
+	attributeType: number[] = [];
+	baseStats: number[] = [];
+	learnableMoves: string[];
+	learnByLevel: number[];
+	spriteURL: string;
+}
+
+export class PlayerPokemon // We will use these for the enemy pokemon as well.
+{
+	baseID: string;
 	customName: string;
-	attributeType: number[] = [0, 0];
-	health?: number;
+	currentHP: number;
+	statEV: number[] = [];
+	statIV: number[] = [];
+	statNature?: number; // Don't implement yet but keep the member for future development.
+	expPoints: number;
+	moveIDList: string[] = [];
 }
 
 export class Move
@@ -20,8 +34,7 @@ export class Move
 
 export class Team
 {
-	userName: string;
 	teamName: string;
-	teamData: Pokemon[] = [];
+	teamData: PlayerPokemon[] = [];
 	isActive: boolean;
 }

@@ -4,7 +4,7 @@
 <ng-container *ngIf="this.szOperation == 'RENAME'">
 	<form>
 		<mat-form-field class="max_width">
-			<input #dialogRenameBox matInput [formControl]="dialogRenameControl" [errorStateMatcher]="matcher" value="{{this.data.Pokemon.customName}}">
+			<input matInput [formControl]="dialogRenameControl" [errorStateMatcher]="matcher" value="{{this.data.Pokemon.customName}}">
 			<mat-hint align="end">{{dialogRenameBox.value?.length || 0}}/12</mat-hint>
 			<mat-error *ngIf="dialogRenameControl.hasError('maxlength')">
 				Maximum name length is 12 characters.
@@ -16,7 +16,7 @@
 <ng-container *ngIf="this.szOperation == 'MOVE' && this.data.iTeamMembers > 1">
 	<form>
 		<mat-form-field class="max_width">
-			<input #dialogMoveBox matInput [formControl]="dialogMoveControl" [errorStateMatcher]="matcher">
+			<input matInput [formControl]="dialogMoveControl" [errorStateMatcher]="matcher">
 			<mat-error *ngIf="dialogMoveControl.hasError('maxlength') || dialogMoveControl.hasError('pattern')">
 				Only numbers between 1 and 6 are accepted.
 			</mat-error>
@@ -27,7 +27,7 @@
 <ng-container *ngIf="this.szOperation == 'RENAME TEAM'">
 	<form>
 		<mat-form-field class="max_width">
-			<input #dialogRenameTeamBox matInput [formControl]="dialogRenameTeamControl" [errorStateMatcher]="matcher" value="{{this.data.szCurrentName}}">
+			<input matInput [formControl]="dialogRenameTeamControl" [errorStateMatcher]="matcher" value="{{this.data.szCurrentName}}">
 			<mat-hint align="end">{{dialogRenameTeamBox.value?.length || 0}}/16</mat-hint>
 			<mat-error *ngIf="dialogRenameTeamControl.hasError('maxlength')">
 				Team's maximum name length is 16 characters.
@@ -39,32 +39,35 @@
 <ng-container *ngIf="this.szOperation == 'ADD INTERNAL POKEMON' || this.szOperation == 'EDIT INTERNAL POKEMON'">
 	<form>
 		<mat-form-field class="max_width">
-			<input #dEditInternalPKMNBox_dexID matInput [formControl]="dEditInternalPKMNControl_dexID" [errorStateMatcher]="matcher">
+			<input matInput [formControl]="dInternalPKMNControl_dexID" [errorStateMatcher]="matcher">
 			<mat-hint>Dex Number</mat-hint>
-			<mat-error *ngIf="dEditInternalPKMNControl_dexID.hasError('pattern') || dEditInternalPKMNControl_dexID.hasError('required')">
+			<mat-error *ngIf="dInternalPKMNControl_dexID.hasError('pattern') || dInternalPKMNControl_dexID.hasError('required')">
 				Only numbers!
 			</mat-error>
 		</mat-form-field>
+		<br>
 		<mat-form-field class="max_width">
-			<input #dEditInternalPKMNBox_defaultName matInput [formControl]="dEditInternalPKMNControl_defaultName" [errorStateMatcher]="matcher">
+			<input matInput [formControl]="dInternalPKMNControl_defaultName" [errorStateMatcher]="matcher">
 			<mat-hint>Species Name</mat-hint>
-			<mat-error *ngIf="dEditInternalPKMNControl_defaultName.hasError('required')">
+			<mat-error *ngIf="dInternalPKMNControl_defaultName.hasError('required')">
 				The Pokemon must have a default name!
 			</mat-error>
 		</mat-form-field>
+		<br>
 		<mat-form-field class="max_width">
-			<mat-select #dEditInternalPKMNBox_attributeTypePrimary [formControl]="dEditInternalPKMNControl_attributeType1" [errorStateMatcher]="matcher">
+			<mat-select [formControl]="dInternalPKMNControl_attributeTypePrimary" [errorStateMatcher]="matcher">
 				<ng-container *ngFor="let types of this.data.arrTypes; let i = index">
 					<mat-option value="{{i}}">{{this.data.arrTypes[i]}}</mat-option>
 				</ng-container>
 			</mat-select>
 			<mat-hint>Type (Primary)</mat-hint>
-			<mat-error *ngIf="dEditInternalPKMNControl_attributeType1.hasError('pattern') || dEditInternalPKMNControl_attributeType1.hasError('required')">
+			<mat-error *ngIf="dInternalPKMNControl_attributeTypePrimary.hasError('pattern') || dInternalPKMNControl_attributeTypePrimary.hasError('required')">
 				Primary type is obligatory.
 			</mat-error>
 		</mat-form-field>
+		<br>
 		<mat-form-field class="max_width">
-			<mat-select #dEditInternalPKMNBox_attributeTypeSecondary [formControl]="dEditInternalPKMNControl_attributeType2" [errorStateMatcher]="matcher">
+			<mat-select [formControl]="dInternalPKMNControl_attributeTypeSecondary" [errorStateMatcher]="matcher">
 				<ng-container *ngFor="let types of this.data.arrTypes; let i = index">
 					<ng-container *ngIf="i != 1">
 						<mat-option value="{{i}}">{{this.data.arrTypes[i]}}</mat-option>
@@ -72,8 +75,75 @@
 				</ng-container>
 			</mat-select>
 			<mat-hint>Type (Secondary)</mat-hint>
-			<mat-error *ngIf="dEditInternalPKMNControl_attributeType2.hasError('required')">
+			<mat-error *ngIf="dInternalPKMNControl_attributeTypeSecondary.hasError('required')">
 				Can't be undefined. If you do not want this Pokemon to use a secondary type, use Unassigned.
+			</mat-error>
+		</mat-form-field>
+		<br>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_baseStatsHP" [errorStateMatcher]="matcher">
+			<mat-hint>Base HP</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_baseStatsHP.hasError('pattern') || dInternalPKMNControl_baseStatsHP.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_baseStatsATK" [errorStateMatcher]="matcher">
+			<mat-hint>Base Attack</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_baseStatsATK.hasError('pattern') || dInternalPKMNControl_baseStatsATK.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_baseStatsDEF" [errorStateMatcher]="matcher">
+			<mat-hint>Base Defense</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_baseStatsDEF.hasError('pattern') || dInternalPKMNControl_baseStatsDEF.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_baseStatsSPA" [errorStateMatcher]="matcher">
+			<mat-hint>Base Special Attack</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_baseStatsSPA.hasError('pattern') || dInternalPKMNControl_baseStatsSPA.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_baseStatsSPD" [errorStateMatcher]="matcher">
+			<mat-hint>Base Special Defense</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_baseStatsSPD.hasError('pattern') || dInternalPKMNControl_baseStatsSPD.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_baseStatsSPE" [errorStateMatcher]="matcher">
+			<mat-hint>Base Speed</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_baseStatsSPE.hasError('pattern') || dInternalPKMNControl_baseStatsSPE.hasError('required')">
+				Only numbers!
+			</mat-error>
+		</mat-form-field>
+		<br>
+		<mat-form-field class="max_width">
+			<textarea matInput [formControl]="dInternalPKMNControl_learnableMoves" [errorStateMatcher]="matcher"></textarea>
+			<mat-hint>Learnable Moves (Move IDs, one per line.)</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_learnableMoves.hasError('required')">
+				The Pokemon must have at least one move!
+			</mat-error>
+		</mat-form-field>
+		<br>
+		<mat-form-field class="max_width">
+			<textarea matInput [formControl]="dInternalPKMNControl_learnByLevel" [errorStateMatcher]="matcher"></textarea>
+			<mat-hint>Learn by Level Up (One per line.)<br>How-to: The first line in this field means it will learn the first line of the learnable moves field, and so on...</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_learnByLevel.hasError('pattern') || dInternalPKMNControl_learnByLevel.hasError('required')">
+				Any learnable moves must be at minimum Level 1.
+			</mat-error>
+		</mat-form-field>
+		<br>
+		<mat-form-field class="max_width">
+			<input matInput [formControl]="dInternalPKMNControl_spriteURL" [errorStateMatcher]="matcher">
+			<mat-hint>Sprite URL</mat-hint>
+			<mat-error *ngIf="dInternalPKMNControl_spriteURL.hasError('required')">
+				An image showing the pokemon is required.
 			</mat-error>
 		</mat-form-field>
 	</form>

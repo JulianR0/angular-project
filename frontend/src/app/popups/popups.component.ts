@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
-import { Pokemon, Move } from '../classes';
+import { BasePokemon, Move } from '../classes';
 
 @Component
 ({
@@ -22,10 +22,20 @@ export class PopupsComponent implements OnInit
 	dialogMoveControl = new FormControl( '', [ Validators.pattern( '^[1-6]*$' ), Validators.maxLength( 1 ) ] );
 	dialogRenameTeamControl = new FormControl( ( this.data.szCurrentName == null ? '' : this.data.szCurrentName ), [ Validators.maxLength( 16 ) ] );
 	
-	dEditInternalPKMNControl_dexID = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.dexID ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
-	dEditInternalPKMNControl_defaultName = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.defaultName ), [ Validators.required ] );
-	dEditInternalPKMNControl_attributeType1 = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.attributeType[ 0 ] ), [ Validators.required, Validators.pattern( '^[1-9][0-9]*$' ) ] );
-	dEditInternalPKMNControl_attributeType2 = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.attributeType[ 1 ] ), [ Validators.required ] );
+	// ho boi
+	dInternalPKMNControl_dexID = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.dexID ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_defaultName = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.defaultName ), [ Validators.required ] );
+	dInternalPKMNControl_attributeTypePrimary = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.attributeType[ 0 ] ), [ Validators.required, Validators.pattern( '^[1-9][0-9]*$' ) ] );
+	dInternalPKMNControl_attributeTypeSecondary = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.attributeType[ 1 ] ), [ Validators.required ] );
+	dInternalPKMNControl_baseStatsHP = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 0 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_baseStatsATK = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 1 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_baseStatsDEF = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 2 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_baseStatsSPA = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 3 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_baseStatsSPD = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 4 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_baseStatsSPE = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 5 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
+	dInternalPKMNControl_learnableMoves = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.learnableMoves ), [ Validators.required ] );
+	dInternalPKMNControl_learnByLevel = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.learnByLevel ), [ Validators.required, Validators.pattern( '^[1-9][0-9]*$' ) ] );
+	dInternalPKMNControl_spriteURL = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.spriteURL ), [ Validators.required ] );
 	
 	dEditInternalMoveControl_moveName = new FormControl( ( this.data.Move == null ? '' : this.data.Move.moveName ), [ Validators.required ] );
 	dEditInternalMoveControl_moveDescription = new FormControl( ( this.data.Move == null ? '' : this.data.Move.moveDescription ), [ Validators.required ] );
@@ -160,12 +170,40 @@ export class PopupsComponent implements OnInit
 	
 	updatePokemon()
 	{
-		if ( !this.dEditInternalPKMNControl_dexID.invalid && !this.dEditInternalPKMNControl_defaultName.invalid && !this.dEditInternalPKMNControl_attributeType1.invalid && !this.dEditInternalPKMNControl_attributeType2.invalid )
+		if ( !this.dInternalPKMNControl_dexID.invalid &&
+			!this.dInternalPKMNControl_defaultName.invalid && 
+			!this.dInternalPKMNControl_attributeTypePrimary.invalid && 
+			!this.dInternalPKMNControl_attributeTypeSecondary.invalid && 
+			!this.dInternalPKMNControl_baseStatsHP.invalid && 
+			!this.dInternalPKMNControl_baseStatsATK.invalid && 
+			!this.dInternalPKMNControl_baseStatsDEF.invalid && 
+			!this.dInternalPKMNControl_baseStatsSPA.invalid && 
+			!this.dInternalPKMNControl_baseStatsSPD.invalid && 
+			!this.dInternalPKMNControl_baseStatsSPE.invalid && 
+			!this.dInternalPKMNControl_learnableMoves.invalid && 
+			!this.dInternalPKMNControl_learnByLevel.invalid && 
+			!this.dInternalPKMNControl_spriteURL.invalid )
 		{
-			let returnValue = new Pokemon();
-			returnValue.dexID = this.dEditInternalPKMNControl_dexID.value;
-			returnValue.defaultName = this.dEditInternalPKMNControl_defaultName.value;
-			returnValue.attributeType = [ this.dEditInternalPKMNControl_attributeType1.value, this.dEditInternalPKMNControl_attributeType2.value ];
+			let returnValue = new BasePokemon();
+			returnValue.dexID = this.dInternalPKMNControl_dexID.value;
+			returnValue.defaultName = this.dInternalPKMNControl_defaultName.value;
+			returnValue.attributeType =
+			[
+				this.dInternalPKMNControl_attributeTypePrimary.value,
+				this.dInternalPKMNControl_attributeTypeSecondary.value
+			];
+			returnValue.baseStats =
+			[
+				this.dInternalPKMNControl_baseStatsHP.value,
+				this.dInternalPKMNControl_baseStatsATK.value,
+				this.dInternalPKMNControl_baseStatsDEF.value,
+				this.dInternalPKMNControl_baseStatsSPA.value,
+				this.dInternalPKMNControl_baseStatsSPD.value,
+				this.dInternalPKMNControl_baseStatsSPE.value
+			];
+			returnValue.learnableMoves = this.dInternalPKMNControl_learnableMoves.value;
+			returnValue.learnByLevel = this.dInternalPKMNControl_learnByLevel.value;
+			returnValue.spriteURL = this.dInternalPKMNControl_spriteURL.value;
 			
 			this.dialogRef.close( returnValue );
 		}

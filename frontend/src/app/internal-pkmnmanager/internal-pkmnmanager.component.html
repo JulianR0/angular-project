@@ -8,17 +8,30 @@
 <button (click)="addPokemon()" class="button_new">Add new Pokemon</button>
 <table>
 	<tr>
+		<th>Internal ID</th>
 		<th>Dex Number</th>
 		<th>Species Name</th>
 		<th>Type</th>
+		<th colspan="6" style="text-align:center">Base Stats</th>
+		<th>Move List</th>
+		<th>Image</th>
 	</tr>
 	<ng-container *ngIf="this.totalPokemon.length">
 		<ng-container *ngFor="let numberPokemon of this.totalPokemon; let i = index">
 			<tr>
+				<td>{{numberPokemon._id}}</td>
 				<td>{{numberPokemon.dexID}}</td>
 				<td>{{numberPokemon.defaultName}}</td>
 				<td>{{getType(numberPokemon)}}</td>
-				<td><button (click)="editPokemon(numberPokemon)" class="button_edit">Edit</button></td>
+				<td>{{numberPokemon.baseStats[0]}} HP</td>
+				<td>{{numberPokemon.baseStats[1]}} ATK</td>
+				<td>{{numberPokemon.baseStats[2]}} DEF</td>
+				<td>{{numberPokemon.baseStats[3]}} SPA</td>
+				<td>{{numberPokemon.baseStats[4]}} SPD</td>
+				<td>{{numberPokemon.baseStats[5]}} SPE</td>
+				<td style="text-align:center"><button class="button_new">View</button></td>
+				<td style="text-align:center"><img src={{numberPokemon.spriteURL}}></td>
+				<td><button (click)="editPokemon(numberPokemon, i)" class="button_edit">Edit</button></td>
 				<td><button (click)="deletePokemon(i)" class="button_delete">Delete</button></td>
 			</tr>
 		</ng-container>

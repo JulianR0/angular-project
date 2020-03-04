@@ -5,7 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { ClassesService } from '../classes.service';
 import { PopupsComponent } from '../popups/popups.component';
-import { Pokemon } from '../classes';
+import { BasePokemon } from '../classes';
 
 @Component
 ({
@@ -16,7 +16,7 @@ import { Pokemon } from '../classes';
 
 export class InternalPKMNManagerComponent implements OnInit
 {
-	totalPokemon: Pokemon[] = [];
+	totalPokemon: BasePokemon[] = [];
 	
 	destroy$: Subject< boolean > = new Subject< boolean >();
 	
@@ -24,13 +24,16 @@ export class InternalPKMNManagerComponent implements OnInit
 	
 	ngOnInit()
 	{
-		// Get all currently exsistting Pokemon
-		this.PKMNService.GetPokemon( '' ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
+		// Get all currently existing Pokemon
+		this.PKMNService.GetPokemon().pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 		{
 			for ( let iPokemon in data )
 			{
 				// Add to list
 				this.totalPokemon.push( data[ iPokemon ] );
+				
+				// Remove TypeScript error by implicitly adding mongo "id" member
+				this.totalPokemon[ '_id' ] = data[ iPokemon ][ '_id' ];
 			}
 			
 			// Sort
@@ -38,7 +41,7 @@ export class InternalPKMNManagerComponent implements OnInit
 		});
 	}
 	
-	getType( pokemon: Pokemon )
+	getType( pokemon: BasePokemon )
 	{
 		let szReturn = '';
 		
@@ -88,7 +91,7 @@ export class InternalPKMNManagerComponent implements OnInit
 		});
 	}
 	
-	editPokemon( pokemon: Pokemon )
+	editPokemon( pokemon: BasePokemon, indexNumber: number )
 	{
 		// Initialize dialog box
 		const dialogConfig = new MatDialogConfig();
@@ -108,17 +111,16 @@ export class InternalPKMNManagerComponent implements OnInit
 			// Only if we actually submitted
 			if ( newData != undefined )
 			{
-				this.PKMNService.SavePokemon( newData, 'update', pokemon.defaultName ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
+				this.PKMNService.SavePokemon( newData, 'update', this.totalPokemon[ indexNumber ][ '_id' ] ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 				{
 					// Update the entries
 					pokemon.dexID = newData.dexID;
 					pokemon.defaultName = newData.defaultName;
-					
-					// Fix for old data
-					if ( pokemon.attributeType == null )
-						pokemon[ 'attributeType' ] = [ 0, 0 ];
-					
 					pokemon.attributeType = newData.attributeType;
+					pokemon.baseStats = newData.baseStats;
+					pokemon.learnableMoves = newData.learnableMoves;
+					pokemon.learnByLevel = newData.learnByLevel;
+					pokemon.spriteURL = newData.spriteURL;
 				});
 				
 				// Re-Sort

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { Pokemon, Move, Team } from './classes';
+import { BasePokemon, PlayerPokemon, Move, Team } from './classes';
 
 const httpOptions =
 {
@@ -58,29 +58,23 @@ export class ClassesService
 	
 	constructor( private http: HttpClient ) { }
 	
-	// Returns all Pokemon whose name contains search term
-	public GetPokemon( szSearchTerm: string ): Observable< Pokemon[] >
+	// Returns all Pokemon
+	public GetPokemon(): Observable< BasePokemon[] >
 	{
-		/*if ( !szSearchTerm.trim() )
-		{
-			// Nothing to search, nothing to return
-			return of( [] );
-		}*/
-		
-		return this.http.get< Pokemon[] >( `${this.gAPIUrl}/pokemonList/${szSearchTerm}` ).pipe
+		return this.http.get< BasePokemon[] >( `${this.gAPIUrl}/pokemonList/` ).pipe
 		(
 			catchError( this.handleError )
 		);
 	}
 	
 	// Updates/Adds a Pokemon to the internal list
-	public SavePokemon( newData: Pokemon, szAction: string, szOldName: string ): Observable< Pokemon[] >
+	public SavePokemon( newData: BasePokemon, szAction: string, szPokemonID: string ): Observable< BasePokemon[] >
 	{
 		// Directly send the HTTP request
 		if ( szAction != 'new' )
 		{
 			// Update an existting pokemon
-			return this.http.put< Pokemon[] >( `${this.gAPIUrl}/pokemonList/${szOldName}`, newData, httpOptions ).pipe
+			return this.http.put< BasePokemon[] >( `${this.gAPIUrl}/pokemonList/${szPokemonID}`, newData, httpOptions ).pipe
 			(
 				catchError( this.handleError )
 			);
@@ -88,7 +82,7 @@ export class ClassesService
 		else
 		{
 			// Create new pokemon
-			return this.http.post< Pokemon[] >( `${this.gAPIUrl}/pokemonList/`, newData, httpOptions ).pipe
+			return this.http.post< BasePokemon[] >( `${this.gAPIUrl}/pokemonList/`, newData, httpOptions ).pipe
 			(
 				catchError( this.handleError )
 			);
@@ -153,9 +147,9 @@ export class ClassesService
 	}
 	
 	// Returns all teams from a player
-	public GetAllTeams( szUserName: string ): Observable< Team[] >
+	public GetAllTeams(): Observable< Team[] >
 	{
-		return this.http.get< Team[] >( `${this.gAPIUrl}/team/findall/${szUserName}` ).pipe
+		return this.http.get< Team[] >( `${this.gAPIUrl}/team/findall` ).pipe
 		(
 			catchError( this.handleError )
 		);
@@ -177,7 +171,7 @@ export class ClassesService
 	}
 	
 	// Saves a player's Pokemon team
-	public SaveTeam( playerTeam: Pokemon[], szTeamName: string, teamID: string ): Observable< Team[] >
+	public SaveTeam( playerTeam: PlayerPokemon[], szTeamName: string, teamID: string ): Observable< Team[] >
 	{
 		// Build the data we are going to save
 		let pre_SaveData = new Team();
@@ -191,7 +185,17 @@ export class ClassesService
 		// If there are less than 6 Pokemon, fill with empty space
 		while ( pre_SaveData.teamData.length < 6 )
 		{
-			pre_SaveData.teamData.push( { dexID: 0, defaultName: "MissingNo.", customName: "", attributeType: [ 0, 0 ] } );
+			let dummyData = new PlayerPokemon();
+			dummyData.baseID = "NULL";
+			dummyData.customName = "MissingNo.";
+			dummyData.currentHP = -1;
+			dummyData.statEV = [ -1, -1, -1, -1, -1, -1 ];
+			dummyData.statIV = [ -1, -1, -1, -1, -1, -1 ];
+			dummyData.statNature = -1;
+			dummyData.expPoints = -1;
+			dummyData.moveIDList = [ "NULL", "NULL", "NULL", "NULL" ];
+			
+			pre_SaveData.teamData.push( dummyData );
 		}
 		
 		// Save the team's name
@@ -209,7 +213,6 @@ export class ClassesService
 		else
 		{
 			// Create new team
-			pre_SaveData.userName = 'Giegue';
 			return this.http.post< Team[] >( `${this.gAPIUrl}/team/`, pre_SaveData, httpOptions ).pipe
 			(
 				catchError( this.handleError )
@@ -224,17 +227,17 @@ export class ClassesService
 		let bActive = { isActive: true };
 		
 		// HTTP request
-		return this.http.put< Team[] >( `${this.gAPIUrl}/team/setactive/Giegue/${teamID}`, bActive, httpOptions ).pipe
+		return this.http.put< Team[] >( `${this.gAPIUrl}/team/setactive/${teamID}`, bActive, httpOptions ).pipe
 		(
 			catchError( this.handleError )
 		);
 	}
 	
 	// Gets the current active team
-	public GetActiveTeam( /* szUserName: string */ ): Observable< Team >
+	public GetActiveTeam(): Observable< Team >
 	{
 		// Simple request
-		return this.http.get< Team >( `${this.gAPIUrl}/team/getactive/Giegue` ).pipe
+		return this.http.get< Team >( `${this.gAPIUrl}/team/getactive` ).pipe
 		(
 			catchError( this.handleError )
 		);
@@ -251,8 +254,10 @@ export class ClassesService
 	}
 	
 	// Execute a move
-	public DoMove( attacker: Pokemon, target: Pokemon ): Observable< any >
+	public DoMove(): void
 	{
+		/* OUTDATED. This function does nothing until battle rework.
+		
 		// Build the JSON structure
 		let pre_Data = [];
 		
@@ -265,6 +270,7 @@ export class ClassesService
 		(
 			catchError( this.handleError )
 		);
+		*/
 	}
 	
 	private handleError( errorMsg: HttpErrorResponse )
