@@ -6,12 +6,14 @@ module.exports = function(app)
 	var moveList = require( '../controllers/moveListController' );
 	var team = require( '../controllers/teamController' );
 	
+	var attackModule = require( '../controllers/attackController.js' );
+	
 	// pokemonList Routes
 	app.route( '/rest/pokemonList' )
 		.get( pokemonList.find_all_pokemon )
 		.post( pokemonList.add_pokemon );
 	
-	app.route( '/rest/pokemonList/:pkmnName' )
+	app.route( '/rest/pokemonList/:pkmnID' )
 		.get( pokemonList.find_pokemon )
 		.put( pokemonList.update_pokemon )
 		.delete( pokemonList.delete_pokemon );
@@ -30,13 +32,13 @@ module.exports = function(app)
 	app.route( '/rest/team' )
 		.post( team.save_team );
 	
-	app.route( '/rest/team/setactive/:accUserName/:teamID' )
+	app.route( '/rest/team/setactive/:teamID' )
 		.put( team.set_active_team );
 	
-	app.route( '/rest/team/getactive/:accUserName' )
+	app.route( '/rest/team/getactive' )
 		.get( team.get_active_team );
 	
-	app.route( '/rest/team/findall/:accUserName' )
+	app.route( '/rest/team/findall' )
 		.get( team.get_all_teams );
 	
 	app.route( '/rest/team/findone/:teamID' )
@@ -44,9 +46,10 @@ module.exports = function(app)
 		.put( team.update_team )
 		.delete( team.delete_team );
 	
-	// moveDo Routes
-	app.route( '/rest/moveDo' )
-		.post( moveList.calc_damage );
+	/* ATTACK MODULE */
+	// execute an attack
+	app.route( '/rest/attack/calculate/:ownerLevel/:ownerAttack/:targetDefense/:movePower' )
+		.get( attackModule.calc_damage );
 	
 	/*
 	app.route('/tasks')

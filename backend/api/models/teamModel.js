@@ -4,11 +4,6 @@ var Schema = mongoose.Schema;
 
 var TeamSchema = new Schema
 ({
-	userName:
-	{
-		type: String,
-		required: 'Missing user name!'
-	},
 	teamName:
 	{
 		type: String,
@@ -23,6 +18,11 @@ var TeamSchema = new Schema
 	{
 		type: Boolean,
 		default: false
+	},
+	arrayPosition:
+	{
+		type: Number,
+		required: 'Undefined array index!'
 	}
 });
 

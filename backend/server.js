@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 // models
-var Pokemon = require('./api/models/pokemonListModel');
+var BasePokemon = require('./api/models/pokemonListModel');
 var Move = require('./api/models/moveListModel');
 var Team = require('./api/models/teamModel');
 
