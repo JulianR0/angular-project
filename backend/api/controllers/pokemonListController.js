@@ -1,12 +1,12 @@
 'use strict';
 
 var mongoose = require( 'mongoose' );
-var Pokemon = mongoose.model( 'Pokemon' );
+var BasePokemon = mongoose.model( 'BasePokemon' );
 
 // Returns all pokemon from the internal list
 exports.find_all_pokemon = function( req, res )
 {
-	Pokemon.find( {}, function( err, task )
+	BasePokemon.find( {}, function( err, task )
 	{
 		if ( err )
 			res.send( err );
@@ -14,11 +14,10 @@ exports.find_all_pokemon = function( req, res )
 	});
 };
 
-// Returns all pokemon from the internal list that matches the search term
+// Returns a pokemon from the internal list
 exports.find_pokemon = function( req, res )
 {
-	// Apply regex to this so substrings can be used as search terms
-	Pokemon.find( { defaultName: { '$regex': req.params.pkmnName, '$options': 'i' } }, function( err, task )
+	BasePokemon.find( { _id: req.params.pkmnID }, function( err, task )
 	{
 		if ( err )
 			res.send( err );
@@ -29,7 +28,7 @@ exports.find_pokemon = function( req, res )
 // Saves a new pokemon to the internal list
 exports.add_pokemon = function(req, res)
 {
-	var new_user = new Pokemon(req.body);
+	var new_user = new BasePokemon(req.body);
 	new_user.save(function(err, task)
 	{
 		if (err)
@@ -41,7 +40,7 @@ exports.add_pokemon = function(req, res)
 // Updates an existting pokemon from the internal list with new data
 exports.update_pokemon = function(req, res)
 {
-	Pokemon.findOneAndUpdate( { defaultName: req.params.pkmnName }, req.body, {new: true}, function(err, task)
+	BasePokemon.findOneAndUpdate( { _id: req.params.pkmnID }, req.body, {new: true}, function(err, task)
 	{
 		if (err)
 			res.send(err);
@@ -52,7 +51,7 @@ exports.update_pokemon = function(req, res)
 // Removes a pokemon from the internal list
 exports.delete_pokemon = function(req, res)
 {
-	Pokemon.remove( { defaultName: req.params.pkmnName }, function(err, task)
+	BasePokemon.remove( { _id: req.params.pkmnID }, function(err, task)
 	{
 		if (err)
 			res.send(err);

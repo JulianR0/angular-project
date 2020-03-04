@@ -3,9 +3,10 @@
 var mongoose = require( 'mongoose' );
 var Team = mongoose.model( 'Team' );
 
+// Gets all teams from the player
 exports.get_all_teams = function(req, res)
 {
-	Team.find( { userName: req.params.accUserName }, function(err, task)
+	Team.find({/* all */}, function(err, task)
 	{
 		if (err)
 			res.send(err);
@@ -13,6 +14,7 @@ exports.get_all_teams = function(req, res)
 	});
 };
 
+// Creates a new team
 exports.save_team = function(req, res)
 {
 	var new_user = new Team(req.body);
@@ -24,6 +26,7 @@ exports.save_team = function(req, res)
 	});
 };
 
+// Gets one specific team
 exports.get_team = function(req, res)
 {
 	Team.find( { _id: req.params.teamID }, function(err, task)
@@ -34,6 +37,7 @@ exports.get_team = function(req, res)
 	});
 };
 
+// Updates an existing team with new data
 exports.update_team = function(req, res)
 {
 	Team.findOneAndUpdate( { _id: req.params.teamID }, req.body, {new: true}, function(err, task)
@@ -44,6 +48,7 @@ exports.update_team = function(req, res)
 	});
 };
 
+// Removes a team
 exports.delete_team = function(req, res)
 {
 	Team.remove( { _id: req.params.teamID }, function(err, task)
@@ -54,9 +59,10 @@ exports.delete_team = function(req, res)
 	});
 };
 
+// Sets the selected team as active
 exports.set_active_team = function(req, res)
 {
-	Team.find( { userName: req.params.accUserName }, function(err, task)
+	Team.find({/*all*/}, function(err, task)
 	{
 		if (err)
 		{
@@ -90,9 +96,10 @@ exports.set_active_team = function(req, res)
 	});
 };
 
+// Returns active team
 exports.get_active_team = function(req, res)
 {
-	Team.findOne( { userName: req.params.accUserName, isActive: true }, function(err, task)
+	Team.findOne({ isActive: true }, function(err, task)
 	{
 		if (err)
 			res.send(err);
