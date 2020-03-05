@@ -81,6 +81,9 @@ export class InternalPKMNManagerComponent implements OnInit
 			{
 				this.PKMNService.SavePokemon( newData, 'new', 'MissingNo.' ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 				{
+					// Remember to add the generated ID!
+					newData[ '_id' ] = data[ '_id' ];
+					
 					// Update the entries
 					this.totalPokemon.push( newData );
 					
@@ -148,7 +151,7 @@ export class InternalPKMNManagerComponent implements OnInit
 			// Only if we actually submitted
 			if ( newData != undefined )
 			{
-				this.PKMNService.RemovePokemon( this.totalPokemon[ indexNumber ].defaultName ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
+				this.PKMNService.RemovePokemon( this.totalPokemon[ indexNumber ][ '_id' ] ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 				{
 					if ( data[ 'message' ] == 'Pokemon removed' )
 						this.totalPokemon.splice( indexNumber, 1 );

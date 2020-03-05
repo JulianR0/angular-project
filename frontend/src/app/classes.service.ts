@@ -52,8 +52,8 @@ export class ClassesService
 	public arrCategoryNames: string[] =
 	[
 		"Physical",
-		"Special",
-		"Status"
+		"Special"
+		//"Status"
 	];
 	
 	constructor( private http: HttpClient ) { }
@@ -90,38 +90,32 @@ export class ClassesService
 	}
 	
 	// Removes a Pokemon from the internal list
-	public RemovePokemon( szPokemon: string ): Observable< any >
+	public RemovePokemon( szPokemonID: string ): Observable< any >
 	{
-		// Delete the team
-		return this.http.delete< any >( `${this.gAPIUrl}/pokemonList/${szPokemon}`, httpOptions ).pipe
+		// Delete the pokemon
+		return this.http.delete< any >( `${this.gAPIUrl}/pokemonList/${szPokemonID}`, httpOptions ).pipe
 		(
 			catchError( this.handleError )
 		);
 	}
 	
-	// Returns all Moves whose name contains search term
-	public GetMove( szSearchTerm: string ): Observable< Move[] >
+	// Returns all Moves
+	public GetMove(): Observable< Move[] >
 	{
-		/*if ( !szSearchTerm.trim() )
-		{
-			// Nothing to search, nothing to return
-			return of( [] );
-		}*/
-		
-		return this.http.get< Move[] >( `${this.gAPIUrl}/moveList/${szSearchTerm}` ).pipe
+		return this.http.get< Move[] >( `${this.gAPIUrl}/moveList/` ).pipe
 		(
 			catchError( this.handleError )
 		);
 	}
 	
 	// Updates/Adds a Move to the internal list
-	public SaveMove( newData: Move, szAction: string, szOldName: string ): Observable< Move[] >
+	public SaveMove( newData: Move, szAction: string, szMoveID: string ): Observable< Move[] >
 	{
 		// Directly send the HTTP request
 		if ( szAction != 'new' )
 		{
 			// Update an existting move
-			return this.http.put< Move[] >( `${this.gAPIUrl}/moveList/${szOldName}`, newData, httpOptions ).pipe
+			return this.http.put< Move[] >( `${this.gAPIUrl}/moveList/${szMoveID}`, newData, httpOptions ).pipe
 			(
 				catchError( this.handleError )
 			);
@@ -137,10 +131,10 @@ export class ClassesService
 	}
 	
 	// Removes a Move from the internal list
-	public RemoveMove( szMove: string ): Observable< any >
+	public RemoveMove( szMoveID: string ): Observable< any >
 	{
-		// Delete the team
-		return this.http.delete< any >( `${this.gAPIUrl}/moveList/${szMove}`, httpOptions ).pipe
+		// Delete the move
+		return this.http.delete< any >( `${this.gAPIUrl}/moveList/${szMoveID}`, httpOptions ).pipe
 		(
 			catchError( this.handleError )
 		);
