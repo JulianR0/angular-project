@@ -25,12 +25,15 @@ export class InternalMoveManagerComponent implements OnInit
 	ngOnInit()
 	{
 		// Get all currently exsistting Moves
-		this.PKMNService.GetMove( '' ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
+		this.PKMNService.GetMove().pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 		{
 			for ( let iMove in data )
 			{
 				// Add to list
 				this.totalMove.push( data[ iMove ] );
+				
+				// Remove TypeScript error by implicitly adding mongo "id" member
+				this.totalMove[ '_id' ] = data[ iMove ][ '_id' ];
 			}
 			
 			// Sort
@@ -40,26 +43,28 @@ export class InternalMoveManagerComponent implements OnInit
 	
 	getType( move: Move )
 	{
-		let szReturn = '';
+		/*let szReturn = '';
 		
 		if ( move.moveAttribute == null )
 			szReturn = 'Undefined';
 		else
 			szReturn = this.PKMNService.arrTypeNames[ move.moveAttribute ];
 		
-		return szReturn;
+		return szReturn;*/
+		return this.PKMNService.arrTypeNames[ move.moveAttribute ];
 	}
 	
 	getCategory( move: Move )
 	{
-		let szReturn = '';
+		/*let szReturn = '';
 		
 		if ( move.moveCategory == null )
 			szReturn = 'Undefined';
 		else
 			szReturn = this.PKMNService.arrCategoryNames[ move.moveCategory ];
 		
-		return szReturn;
+		return szReturn;*/
+		return this.PKMNService.arrCategoryNames[ move.moveCategory ];
 	}
 	
 	addMove()
@@ -84,6 +89,9 @@ export class InternalMoveManagerComponent implements OnInit
 			{
 				this.PKMNService.SaveMove( newData, 'new', '------' ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 				{
+					// Remember to add the generated ID!
+					newData[ '_id' ] = data[ '_id' ];
+					
 					// Update the entries
 					this.totalMove.push( newData );
 					
@@ -94,7 +102,7 @@ export class InternalMoveManagerComponent implements OnInit
 		});
 	}
 	
-	editMove( move: Move )
+	editMove( move: Move, indexNumber: number )
 	{
 		// Initialize dialog box
 		const dialogConfig = new MatDialogConfig();
@@ -115,7 +123,7 @@ export class InternalMoveManagerComponent implements OnInit
 			// Only if we actually submitted
 			if ( newData != undefined )
 			{
-				this.PKMNService.SaveMove( newData, 'update', move.moveName ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
+				this.PKMNService.SaveMove( newData, 'update', this.totalMove[ indexNumber ][ '_id' ] ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 				{
 					// Update the entries
 					move.moveName = newData.moveName;
@@ -152,7 +160,7 @@ export class InternalMoveManagerComponent implements OnInit
 			// Only if we actually submitted
 			if ( newData != undefined )
 			{
-				this.PKMNService.RemoveMove( this.totalMove[ indexNumber ].moveName ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
+				this.PKMNService.RemoveMove( this.totalMove[ indexNumber ][ '_id' ] ).pipe( takeUntil( this.destroy$ ) ).subscribe( data =>
 				{
 					if ( data[ 'message' ] == 'Move removed' )
 						this.totalMove.splice( indexNumber, 1 );

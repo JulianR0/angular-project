@@ -23,7 +23,7 @@ module.exports = function(app)
 		.get( moveList.find_all_moves )
 		.post( moveList.add_move );
 	
-	app.route( '/rest/moveList/:movName' )
+	app.route( '/rest/moveList/:moveID' )
 		.get( moveList.find_move )
 		.put( moveList.update_move )
 		.delete( moveList.delete_move );

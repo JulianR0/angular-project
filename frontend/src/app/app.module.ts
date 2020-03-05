@@ -15,7 +15,7 @@ import { PopupsComponent } from './popups/popups.component';
 import { MainMenuComponent } from './mainmenu/mainmenu.component';
 //import { TeamManagerComponent } from './teammanager/teammanager.component';
 import { InternalPKMNManagerComponent } from './internal-pkmnmanager/internal-pkmnmanager.component';
-//import { InternalMoveManagerComponent } from './internal-movemanager/internal-movemanager.component';
+import { InternalMoveManagerComponent } from './internal-movemanager/internal-movemanager.component';
 //import { BattleComponent } from './battle/battle.component';
 
 @NgModule
@@ -28,7 +28,7 @@ import { InternalPKMNManagerComponent } from './internal-pkmnmanager/internal-pk
 		MainMenuComponent,
 		//TeamManagerComponent,
 		InternalPKMNManagerComponent,
-		//InternalMoveManagerComponent,
+		InternalMoveManagerComponent,
 		//BattleComponent
 	],
 	imports:

@@ -8,6 +8,7 @@
 <button (click)="addMove()" class="button_new">Add new Move</button>
 <table>
 	<tr>
+		<th>Internal ID</th>
 		<th>Name</th>
 		<th>Description</th>
 		<th>Accuracy (%)</th>
@@ -19,6 +20,7 @@
 	<ng-container *ngIf="this.totalMove.length">
 		<ng-container *ngFor="let numberMove of this.totalMove; let i = index">
 			<tr>
+				<td>{{numberMove._id}}</td>
 				<td>{{numberMove.moveName}}</td>
 				<td>{{numberMove.moveDescription}}</td>
 				<td>{{numberMove.moveAccuracy}}</td>
@@ -26,7 +28,7 @@
 				<td>{{numberMove.movePP}}</td>
 				<td>{{getCategory(numberMove)}}</td>
 				<td>{{getType(numberMove)}}</td>
-				<td><button (click)="editMove(numberMove)" class="button_edit">Edit</button></td>
+				<td><button (click)="editMove(numberMove, i)" class="button_edit">Edit</button></td>
 				<td><button (click)="deleteMove(i)" class="button_delete">Delete</button></td>
 			</tr>
 		</ng-container>

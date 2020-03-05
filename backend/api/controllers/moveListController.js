@@ -14,11 +14,10 @@ exports.find_all_moves = function( req, res )
 	});
 };
 
-// Returns all moves from the internal list that matches the search term
+// Returns a move from the internal list
 exports.find_move = function( req, res )
 {
-	// Apply regex to this so substrings can be used as search terms
-	Move.find( { moveName: { '$regex': req.params.movName, '$options': 'i' } }, function( err, task )
+	Move.find( { _id: req.params.moveID }, function( err, task )
 	{
 		if ( err )
 			res.send( err );
@@ -41,7 +40,7 @@ exports.add_move = function(req, res)
 // Updates an existting move from the internal list with new data
 exports.update_move = function(req, res)
 {
-	Move.findOneAndUpdate( { moveName: req.params.movName }, req.body, {new: true}, function(err, task)
+	Move.findOneAndUpdate( { _id: req.params.moveID }, req.body, {new: true}, function(err, task)
 	{
 		if (err)
 			res.send(err);
@@ -52,7 +51,7 @@ exports.update_move = function(req, res)
 // Removes a move from the internal list
 exports.delete_move = function(req, res)
 {
-	Move.remove( { moveName: req.params.movName }, function(err, task)
+	Move.remove( { _id: req.params.moveID }, function(err, task)
 	{
 		if (err)
 			res.send(err);
