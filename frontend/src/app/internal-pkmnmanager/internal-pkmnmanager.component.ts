@@ -142,7 +142,7 @@ export class InternalPKMNManagerComponent implements OnInit
 			doFunction: 'DELETE INTERNAL POKEMON'
 		};
 		
-		// Popup the rename box
+		// Popup the delete box
 		let dialogRef = this.matDialog.open( PopupsComponent, dialogConfig );
 		
 		// Wait for dialog to complete then process
@@ -163,6 +163,20 @@ export class InternalPKMNManagerComponent implements OnInit
 				});
 			}
 		});
+	}
+	
+	viewPokemonMoves( pokemon: BasePokemon )
+	{
+		// Initialize dialog box
+		const dialogConfig = new MatDialogConfig();
+		dialogConfig.data =
+		{
+			Pokemon: pokemon,
+			doFunction: 'VIEW BASE MOVES'
+		};
+		
+		// Popup the moves box
+		let dialogRef = this.matDialog.open( PopupsComponent, dialogConfig );
 	}
 	
 	SortArray()

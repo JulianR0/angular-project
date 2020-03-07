@@ -134,8 +134,8 @@
 		<mat-form-field class="max_width">
 			<textarea matInput [formControl]="dInternalPKMNControl_learnByLevel" [errorStateMatcher]="matcher"></textarea>
 			<mat-hint>Learn by Level Up (One per line.)<br>How-to: The first line in this field means it will learn the first line of the learnable moves field, and so on...</mat-hint>
-			<mat-error *ngIf="dInternalPKMNControl_learnByLevel.hasError('pattern') || dInternalPKMNControl_learnByLevel.hasError('required')">
-				Any learnable moves must be at minimum Level 1.
+			<mat-error *ngIf="dInternalPKMNControl_learnByLevel.hasError('required')">
+				The moves must have a set level!
 			</mat-error>
 		</mat-form-field>
 		<br>
@@ -211,10 +211,19 @@
 	</form>
 </ng-container>
 
+<ng-container *ngIf="this.szOperation == 'VIEW BASE MOVES'">
+	
+</ng-container>
+
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <button class="mat-raised-button" (click)="close()">Cancel</button>
+	<ng-container *ngIf="this.szOperation != 'VIEW BASE MOVES'; else IsViewer">
+		<button class="mat-raised-button" (click)="close()">Cancel</button>
+	</ng-container>
+	<ng-template #IsViewer>
+		<button class="mat-raised-button" (click)="close()">Close</button>
+	</ng-template>
 	
 	<ng-container *ngIf="this.szOperation == 'RENAME'">
 		<button class="mat-raised-button" (click)="rename()">Rename</button>

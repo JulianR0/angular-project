@@ -29,7 +29,7 @@
 				<td>{{numberPokemon.baseStats[3]}} SPA</td>
 				<td>{{numberPokemon.baseStats[4]}} SPD</td>
 				<td>{{numberPokemon.baseStats[5]}} SPE</td>
-				<td style="text-align:center"><button class="button_new">View</button></td>
+				<td style="text-align:center"><button (click)="viewPokemonMoves(numberPokemon)" class="button_new">View</button></td>
 				<td style="text-align:center"><img src={{numberPokemon.spriteURL}}></td>
 				<td><button (click)="editPokemon(numberPokemon, i)" class="button_edit">Edit</button></td>
 				<td><button (click)="deletePokemon(i)" class="button_delete">Delete</button></td>

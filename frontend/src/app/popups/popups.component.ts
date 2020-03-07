@@ -33,8 +33,8 @@ export class PopupsComponent implements OnInit
 	dInternalPKMNControl_baseStatsSPA = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 3 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
 	dInternalPKMNControl_baseStatsSPD = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 4 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
 	dInternalPKMNControl_baseStatsSPE = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.baseStats[ 5 ] ), [ Validators.required, Validators.pattern( '^[0-9]*$' ) ] );
-	dInternalPKMNControl_learnableMoves = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.learnableMoves ), [ Validators.required ] );
-	dInternalPKMNControl_learnByLevel = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.learnByLevel ), [ Validators.required, Validators.pattern( '^[1-9][0-9]*$' ) ] );
+	dInternalPKMNControl_learnableMoves = new FormControl( ( this.data.Pokemon == null ? '' : this.ArrayToNewline( this.data.Pokemon.learnableMoves ) ), [ Validators.required ] );
+	dInternalPKMNControl_learnByLevel = new FormControl( ( this.data.Pokemon == null ? '' : this.ArrayToNewline( this.data.Pokemon.learnByLevel ) ), [ Validators.required ] );
 	dInternalPKMNControl_spriteURL = new FormControl( ( this.data.Pokemon == null ? '' : this.data.Pokemon.spriteURL ), [ Validators.required ] );
 	
 	dEditInternalMoveControl_moveName = new FormControl( ( this.data.Move == null ? '' : this.data.Move.moveName ), [ Validators.required ] );
@@ -201,8 +201,8 @@ export class PopupsComponent implements OnInit
 				this.dInternalPKMNControl_baseStatsSPD.value,
 				this.dInternalPKMNControl_baseStatsSPE.value
 			];
-			returnValue.learnableMoves = this.dInternalPKMNControl_learnableMoves.value;
-			returnValue.learnByLevel = this.dInternalPKMNControl_learnByLevel.value;
+			returnValue.learnableMoves = this.NewlineToStringArray( this.dInternalPKMNControl_learnableMoves.value );
+			returnValue.learnByLevel = this.NewlineToNumberArray( this.dInternalPKMNControl_learnByLevel.value );
 			returnValue.spriteURL = this.dInternalPKMNControl_spriteURL.value;
 			
 			this.dialogRef.close( returnValue );
@@ -224,6 +224,34 @@ export class PopupsComponent implements OnInit
 			
 			this.dialogRef.close( returnValue );
 		}
+	}
+	
+	private ArrayToNewline( arrArray: string[] ): string
+	{
+		let returnString = '';
+		for ( let line in arrArray )
+		{
+			returnString += arrArray[ line ] + '\r\n';
+		}
+		return returnString;
+	}
+	
+	private NewlineToStringArray( szString: string ): string[]
+	{
+		szString = szString.replace(/(?:\r\n|\r|\n)/g, ' ');
+		let returnArray = szString.split( ' ' );
+		return returnArray;
+	}
+	private NewlineToNumberArray( szString: string ): number[]
+	{
+		szString = szString.replace(/(?:\r\n|\r|\n)/g, ' ');
+		let convertString = szString.split( ' ' );
+		let returnArray = [];
+		for ( let line in convertString )
+		{
+			returnArray.push( parseInt( convertString[ line ] ) );
+		}
+		return returnArray;
 	}
 }
 
